@@ -1,6 +1,4 @@
 import { nFormatter } from "@/lib/utils";
-import { TooltipItem } from "chart.js";
-import { DateRange } from "react-day-picker";
 
 export const SALES_DATA = [
   {
@@ -161,7 +159,7 @@ export const CHART_DATA = {
     {
       data: SALES_DATA.map((sale) => sale.Clothing),
       backgroundColor: "transparent",
-      fill: true,
+      // fill: true,
       borderColor: "#489AD2",
       pointBorderColor: "transparent",
       pointBorderWidth: 5,
@@ -170,7 +168,7 @@ export const CHART_DATA = {
     },
     {
       data: SALES_DATA.map((sale) => sale.Accessories),
-      fill: true,
+      // fill: true,
       backgroundColor: "transparent",
       borderColor: "#6FC2F3",
       pointBorderColor: "transparent",
@@ -182,53 +180,35 @@ export const CHART_DATA = {
   ],
 };
 
-export const CHART_OPTIONS = {
-  responsive: true,
-  plugins: {
-    tooltip: {
-      enabled: true,
-      intersect: false,
-      mode: "nearest",
-      callbacks: {
-        title: (item: TooltipItem<"line">[]) =>
-          `${item[0]?.dataset?.label || ""} -  ${item[0].label || ""}`,
-        label: (item: TooltipItem<"line">) => `${item.raw}`,
-      },
+export const NEW_CUSTOMER_CHART_DATA = {
+  labels: SALES_DATA.map((sale) => sale.month),
+  datasets: [
+    {
+      data: SALES_DATA.map((sale) => sale.Clothing),
+      backgroundColor: "transparent",
+      borderColor: "#489AD2",
+      pointBorderColor: "transparent",
+      pointBorderWidth: 5,
+      label: "New Customers",
+      tension: 0.3,
     },
-    legend: {
-      position: "bottom" as const,
-      align: "end",
-    },
+  ],
+};
+
+export const SCALES = {
+  x: {
+    grid: { display: false },
+    border: { display: false, color: "red", width: 50 },
   },
-  scales: {
-    x: {
-      grid: { display: false },
-      border: { display: false, color: "red", width: 50 },
-    },
-    y: {
-      border: { display: false },
-      min: 0,
-      ticks: {
-        stepSize: 10000,
-        callback: (value: String | Number) => nFormatter(Number(value)),
-      },
+  y: {
+    border: { display: false },
+    min: 0,
+    ticks: {
+      stepSize: 10000,
+      callback: (value: String | Number) => nFormatter(Number(value)),
     },
   },
 };
-
-export function filterSalesDataByMonthRange(dateRange: DateRange) {
-  if (dateRange?.from && dateRange?.to) {
-    const fromDate = new Date(dateRange?.from);
-    const toDate = new Date(dateRange?.to);
-    fromDate.setDate(0);
-
-    return SALES_DATA.filter((sale) => {
-      const saleDate = new Date(sale.month + " 01");
-      return saleDate >= fromDate && saleDate <= toDate;
-    });
-  }
-  return null;
-}
 
 export const tabSectionsData = [
   {

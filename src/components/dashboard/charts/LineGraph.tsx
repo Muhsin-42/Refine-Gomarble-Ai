@@ -10,12 +10,14 @@ import {
   Legend,
   ChartData,
   Point,
+  TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { CHART_DATA, CHART_OPTIONS, filterSalesDataByMonthRange } from "./data";
+import { CHART_DATA, SCALES } from "../../../lib/data";
 import TabSections from "./tab-sections";
-import { DatePickerWithRange } from "./date-range";
+import { DatePickerWithRange } from "../../ui/date-range";
 import { DateRange } from "react-day-picker";
+import { filterSalesDataByMonthRange } from "@/lib/utils";
 
 ChartJS.register(
   CategoryScale,
@@ -32,7 +34,7 @@ const initialDate = {
   to: new Date(2023, 11, 30),
 };
 
-export function Line4() {
+export function LineGraph() {
   const [data, setData] =
     useState<ChartData<"line", (number | Point | null)[], unknown>>();
   const [date, setDate] = useState<DateRange | undefined>(initialDate);
@@ -59,10 +61,36 @@ export function Line4() {
   }, [date]);
 
   return (
-    <div className=" w-11/12  lg:w-6/12 mx-auto h-fit  bg-white rounded-lg p-5">
+    <div className=" w-11/12  lg:w-8/12 mx-auto h-fit  bg-white rounded-lg p-5 shadow-xl">
       <TabSections />
       <DatePickerWithRange date={date} setDate={setDate} />
-      {data && <Line options={CHART_OPTIONS} data={data} />}
+      {data && (
+        <Line
+          options={{
+            responsive: true,
+            plugins: {
+              tooltip: {
+                enabled: true,
+                intersect: false,
+                mode: "nearest",
+                callbacks: {
+                  title: (item: TooltipItem<"line">[]) =>
+                    `${item[0]?.dataset?.label || ""} -  ${
+                      item[0].label || ""
+                    }`,
+                  label: (item: TooltipItem<"line">) => `${item.raw}`,
+                },
+              },
+              legend: {
+                position: "bottom" as const,
+                align: "end",
+              },
+            },
+            scales: SCALES,
+          }}
+          data={data}
+        />
+      )}
     </div>
   );
 }
