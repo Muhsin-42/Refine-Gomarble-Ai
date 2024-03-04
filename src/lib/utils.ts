@@ -1,7 +1,7 @@
+import { ISale } from "@/interfaces";
 import { type ClassValue, clsx } from "clsx";
 import { DateRange } from "react-day-picker";
 import { twMerge } from "tailwind-merge";
-import { SALES_DATA } from "./data";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -26,16 +26,19 @@ export function nFormatter(num: number, digits = 1) {
     : "0";
 }
 
-export function filterSalesDataByMonthRange(dateRange: DateRange) {
+export function filterSalesDataByMonthRange(
+  dateRange: DateRange,
+  data: ISale[]
+) {
   if (dateRange?.from && dateRange?.to) {
     const fromDate = new Date(dateRange?.from);
     const toDate = new Date(dateRange?.to);
     fromDate.setDate(0);
 
-    return SALES_DATA.filter((sale) => {
+    return data.filter((sale) => {
       const saleDate = new Date(sale.month + " 01");
       return saleDate >= fromDate && saleDate <= toDate;
     });
   }
-  return null;
+  return [];
 }

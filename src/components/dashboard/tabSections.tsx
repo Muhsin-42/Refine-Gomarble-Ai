@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { MdArrowDropUp } from "react-icons/md";
-import { tabSectionsData } from "../../../lib/data";
+import { tabSectionsData } from "../../lib/data";
 import { Fragment } from "react";
 
 const TabSections = () => {

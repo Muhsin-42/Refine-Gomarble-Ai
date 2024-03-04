@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,16 +8,14 @@ import {
   Title,
   Tooltip,
   Legend,
-  ChartData,
-  Point,
   TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { NEW_CUSTOMER_CHART_DATA, SCALES } from "../../../lib/data";
-import TabSections from "./tab-sections";
+import { SALES_DATA, SCALES } from "../../../lib/data";
+import TabSections from "../tabSections";
 import { DatePickerWithRange } from "../../ui/date-range";
 import { DateRange } from "react-day-picker";
-import { filterSalesDataByMonthRange } from "@/lib/utils";
+import { useChartData } from "@/hooks/useChartData";
 
 ChartJS.register(
   CategoryScale,
@@ -30,30 +28,11 @@ ChartJS.register(
 );
 
 export function NewCustomer() {
-  const [data, setData] =
-    useState<ChartData<"line", (number | Point | null)[], unknown>>();
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(2023, 5, 1),
     to: new Date(2023, 11, 30),
   });
-
-  useEffect(() => {
-    if (date?.from && date.to) {
-      const filteredData = filterSalesDataByMonthRange(date);
-      if (!filteredData) return;
-
-      setData({
-        labels: filteredData.map((sale) => `${sale.month}`),
-        datasets: [
-          {
-            ...NEW_CUSTOMER_CHART_DATA.datasets[0],
-            data: filteredData.map((sale) => sale.Clothing),
-          },
-        ],
-      });
-    }
-  }, [date]);
-
+  const data = useChartData(date, SALES_DATA, "NewCustomer");
   return (
     <div className=" w-11/12  lg:w-8/12 mx-auto h-fit  bg-white rounded-lg p-5">
       <TabSections />

@@ -59,3 +59,9 @@ export type TTab = {
   label: string;
   content: JSX.Element;
 };
+
+export type ISale = {
+  month: String;
+  Clothing: number;
+  Accessories: number;
+};
