@@ -159,7 +159,6 @@ export const CHART_DATA = {
     {
       data: SALES_DATA.map((sale) => sale.Clothing),
       backgroundColor: "transparent",
-      // fill: true,
       borderColor: "#489AD2",
       pointBorderColor: "transparent",
       pointBorderWidth: 5,
@@ -168,7 +167,6 @@ export const CHART_DATA = {
     },
     {
       data: SALES_DATA.map((sale) => sale.Accessories),
-      // fill: true,
       backgroundColor: "transparent",
       borderColor: "#6FC2F3",
       pointBorderColor: "transparent",
@@ -180,19 +178,47 @@ export const CHART_DATA = {
   ],
 };
 
-export const NEW_CUSTOMER_CHART_DATA = {
-  labels: SALES_DATA.map((sale) => sale.month),
+export const BAR_DATA = {
+  labels: ["January", "February", "March", "April", "May"],
   datasets: [
     {
-      data: SALES_DATA.map((sale) => sale.Clothing),
-      backgroundColor: "transparent",
-      borderColor: "#489AD2",
-      pointBorderColor: "transparent",
-      pointBorderWidth: 5,
-      label: "New Customers",
-      tension: 0.3,
+      label: "Clothing",
+      data: [12, 14, 3, 5, 2],
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    {
+      label: "Accessories",
+      data: [10, 3, 16, 5, 1],
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
   ],
+};
+
+export const BAR_OPTIONS = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+    title: {
+      display: true,
+      text: "Chart.js Bar Chart",
+    },
+  },
+  scales: {
+    x: {
+      grid: { display: false },
+      border: { display: false, color: "red", width: 50 },
+    },
+    y: {
+      border: { display: false },
+      min: 0,
+      ticks: {
+        stepSize: 5,
+        callback: (value: String | Number) => nFormatter(Number(value)),
+      },
+    },
+  },
 };
 
 export const SCALES = {

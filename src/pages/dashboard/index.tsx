@@ -43,6 +43,7 @@ export const Dashboard: React.FC = () => {
       id: 1,
       label: "Daily Revenue",
       content: <LineGraph />,
+      // content: <NewCustomer />,
     },
     {
       id: 2,
